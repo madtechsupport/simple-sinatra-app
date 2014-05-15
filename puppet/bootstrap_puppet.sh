@@ -66,4 +66,4 @@ puppet module install rcoleman/puppet_module
 
 # Now prompt to run "puppet apply"
 # First test by hand.
-puppet apply ${installpath}/
+puppet apply ${installpath}/manifests/site.pp --modulepath ${installpath}/modules/:'$basemodulepath'
