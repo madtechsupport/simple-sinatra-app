@@ -60,10 +60,10 @@ yum install -y puppet > /dev/null
 
 echo "Puppet installed!"
 
-# Next make sure this module (experimental but I'm hoping it is going to save me some time) is installed.
+# Next install the required modules.
+puppet module install puppetlabs/apache
+puppet module install puppetlabs/firewall
+puppet module install puppetlabs/ruby
 
-puppet module install rcoleman/puppet_module
-
-# Now prompt to run "puppet apply"
-# First test by hand.
+# Run puppet.
 puppet apply ${installpath}/manifests/site.pp --modulepath ${installpath}/modules/:'$basemodulepath'
