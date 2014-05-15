@@ -4,19 +4,17 @@ module { 'puppetlabs/apache': ensure => present, }
 module { 'puppetlabs/firewall': ensure => present, }
 module { 'puppetlabs/ruby': ensure => present, }
 
-class { 'apache':  }
-
-class { 'firewall': }
-
-class { 'ruby':
-  gems_version  => 'latest'
+class { 'apache':
+	require => Module['puppetlabs/apache'],
 }
 
-package {'ruby-devel': ensure => 'installed', }
-package {'gcc-c++': ensure => 'installed', }
-package { 'builder':
-    ensure   => 'installed',
-    provider => 'gem',
+class { 'firewall': 
+	require => Module['puppetlabs/firewall'],
+}
+
+class { 'ruby':
+	require => Module['puppetlabs/ruby'],
+	gems_version  => 'latest',
 }
 
 class {'passenger': 
@@ -24,8 +22,14 @@ class {'passenger':
 	passenger_version      => '4.0.42',
     	passenger_provider     => 'gem', }
 
-package { 'sinatra':
-    ensure   => 'installed',
-    provider => 'gem',
+package { 'builder':
+	require => Class['ruby'],
+	ensure   => 'installed',
+	provider => 'gem',
 }
 
+package { 'sinatra':
+	require => Class['ruby'],
+	ensure   => 'installed',
+	provider => 'gem',
+}
