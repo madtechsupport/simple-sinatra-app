@@ -61,9 +61,4 @@ yum install -y puppet > /dev/null
 echo "Puppet installed!"
 
 # Next make sure this module (experimental but I'm hoping it is going to save me some time) is installed.
-
-puppet module install rcoleman/puppet_module
-
-# Now prompt to run "puppet apply"
-# First test by hand.
-puppet apply ${installpath}/manifests/site.pp --modulepath ${installpath}/modules/:'$basemodulepath'
+puppet module install rcoleman/puppet_module && puppet apply ${installpath}/manifests/modules.pp --modulepath ${installpath}/modules/:'$basemodulepath'
