@@ -8,7 +8,7 @@ set -e
 # Define environment variables.
 
 setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-exfactsdir="/etc/facter/facts.d"
+exfactdir="/etc/facter/facts.d"
 exfactfile="facts.txt"
 platform=$(uname -i)
 repo_url_el_6="https://yum.puppetlabs.com/el/6/products/${platform}/puppetlabs-release-6-7.noarch.rpm"
