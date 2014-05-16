@@ -1,6 +1,6 @@
-include firewall
-include ruby
-include passenger
+include '::firewall'
+include '::ruby'
+include '::passenger'
 
 # Make sure the public directory exists.
 file { "${setuppath}/../public":
@@ -8,6 +8,6 @@ file { "${setuppath}/../public":
 }
 
 # Do some virtual host thing here.
-class { 'apache':
+class { '::apache':
   default_mods => true,
 }
