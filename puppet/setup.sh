@@ -21,12 +21,12 @@ repo_url_apt="https://apt.puppetlabs.com/puppetlabs-release-${code_name}.deb"
 
 # Check to see if the submodule is present.
 if [[ ! -f ${setuppath}/modules/passenger/README.md ]]; then
-  printf("The passenger submodule appears to be missing.\nWill try and fix that now.\n")
-  cd ${instsallpath}/../
+  printf "The passenger submodule appears to be missing.\nWill try and fix that now.\n"
+  cd ${setuppath}/../
   git submodule init
   git submodule update
   if [[ ! -f ${setuppath}/modules/passenger/README.md ]]; then
-    printf("That didn't work. The passenger submodule is missing.\nExiting...")
+    printf "That didn't work. The passenger submodule is missing.\nExiting..."
     exit 1
   fi
 fi
