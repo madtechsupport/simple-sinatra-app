@@ -1,20 +1,15 @@
 #!/bin/bash
 
-# For the purposes of this script I expect to find bash in the standard
-# location for a Linux server. Hence no "#!/usr/bin/env bash", this script
-# is not meant to be so portable.
-
 # This script bootstraps Puppet on CentOS 6.x Ubuntu LTS...
 # Tested on Centos 6.5 (32 bit).
 
 set -e
-# Using set -e to keep the code short. I can think of situations where I would
-# prefer to not use set -e and instead check the return codes and act
-# accordingly. But this is not one of them.
 
 # Define environment variables.
 
 setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+exfactsdir="/etc/facter/facts.d"
+exfactfile="facts.txt"
 platform=$(uname -i)
 repo_url_el_6="https://yum.puppetlabs.com/el/6/products/${platform}/puppetlabs-release-6-7.noarch.rpm"
 repo_url_apt="https://apt.puppetlabs.com/puppetlabs-release-${code_name}.deb"
@@ -72,10 +67,24 @@ yum install -y puppet > /dev/null
 
 echo "Puppet installed!"
 
+# Next save setuppath as an external fact.
+if [[ -d ${exfactdir} ]]; then
+  printf "Strange, ${exfactdir} is alread present.\n"
+  if [[ -f ${exfactdir}/${exfactfile} ]]; then
+    printf "And the custom external fact file already exists.\n"
+    exit 1
+  else
+    printf "setuppath=${setuppath}\n" > ${exfactdir}/${exfactfile}
+  fi
+else
+  mkdir -p ${exfactdir}
+  printf "setuppath=${setuppath}\n" > ${exfactdir}/${exfactfile}
+fi
+
 # Next install the required modules.
 puppet module install puppetlabs/apache
 puppet module install puppetlabs/firewall
 puppet module install puppetlabs/ruby
 
 # Run puppet.
-puppet apply ${setuppath}/manifests/site.pp --modulepath ${setuppath}/modules/:'$basemodulepath'
+puppet apply ${setuppath}/manifests/site.pp --modulepath '$basemodulepath':${setuppath}/modules/
