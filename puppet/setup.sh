@@ -14,10 +14,22 @@ set -e
 
 # Define environment variables.
 
-installpath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 platform=$(uname -i)
 repo_url_el_6="https://yum.puppetlabs.com/el/6/products/${platform}/puppetlabs-release-6-7.noarch.rpm"
 repo_url_apt="https://apt.puppetlabs.com/puppetlabs-release-${code_name}.deb"
+
+# Check to see if the submodule is present.
+if [[ ! -f ${setuppath}/modules/passenger/README.md ]]; then
+  printf("The passenger submodule appears to be missing.\nWill try and fix that now.\n")
+  cd ${instsallpath}/../
+  git submodule init
+  git submodule update
+  if [[ ! -f ${setuppath}/modules/passenger/README.md ]]; then
+    printf("That didn't work. The passenger submodule is missing.\nExiting...")
+    exit 1
+  fi
+fi
 
 # Work out the Linux distribution and code name.
 distribution() { 
@@ -66,4 +78,4 @@ puppet module install puppetlabs/firewall
 puppet module install puppetlabs/ruby
 
 # Run puppet.
-puppet apply ${installpath}/manifests/site.pp --modulepath ${installpath}/modules/:'$basemodulepath'
+puppet apply ${setuppath}/manifests/site.pp --modulepath ${setuppath}/modules/:'$basemodulepath'
