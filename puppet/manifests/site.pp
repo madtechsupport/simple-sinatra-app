@@ -1,4 +1,3 @@
-include '::firewall'
 include '::ruby'
 include '::passenger'
 
@@ -17,4 +16,27 @@ class { '::apache':
 ::apache::vhost { 'sinatra_default':
   port    => '80',
   docroot => "${installpath}/public",
+  directories => [
+    { 'path'           => "${installpath}/public", 
+      'allow_override' => ['all'],
+      'options'        => ['-MultiViews'],
+    },
+  ],
+}
+
+# Begin firewall config
+class { '::firewall' :
+  ensure  => 'stopped',
+}
+
+# gem install bundler
+package { 'bundler':
+    ensure   => 'installed',
+    provider => 'gem',
+}
+
+# gem install bundler
+package { 'sinatra':
+    ensure   => 'installed',
+    provider => 'gem',
 }
