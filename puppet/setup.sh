@@ -7,7 +7,7 @@ set -e
 
 # Define environment variables.
 
-setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+installpath="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 exfactdir="/etc/facter/facts.d"
 exfactfile="facts.txt"
 platform=$(uname -i)
@@ -15,12 +15,12 @@ repo_url_el_6="https://yum.puppetlabs.com/el/6/products/${platform}/puppetlabs-r
 repo_url_apt="https://apt.puppetlabs.com/puppetlabs-release-${code_name}.deb"
 
 # Check to see if the submodule is present.
-if [[ ! -f ${setuppath}/modules/passenger/README.md ]]; then
+if [[ ! -f ${installpath}/puppet/modules/passenger/README.md ]]; then
   printf "The passenger submodule appears to be missing.\nWill try and fix that now.\n"
-  cd ${setuppath}/../
+  cd ${installpath}
   git submodule init
   git submodule update
-  if [[ ! -f ${setuppath}/modules/passenger/README.md ]]; then
+  if [[ ! -f ${installpath}/puppet/modules/passenger/README.md ]]; then
     printf "That didn't work. The passenger submodule is missing.\nExiting..."
     exit 1
   fi
@@ -67,18 +67,18 @@ yum install -y puppet > /dev/null
 
 echo "Puppet installed!"
 
-# Next save setuppath as an external fact.
+# Next save installpath as an external fact.
 if [[ -d ${exfactdir} ]]; then
   printf "Strange, ${exfactdir} is alread present.\n"
   if [[ -f ${exfactdir}/${exfactfile} ]]; then
     printf "And the custom external fact file already exists.\n"
     exit 1
   else
-    printf "setuppath=${setuppath}\n" > ${exfactdir}/${exfactfile}
+    printf "installpath=${installpath}\n" > ${exfactdir}/${exfactfile}
   fi
 else
   mkdir -p ${exfactdir}
-  printf "setuppath=${setuppath}\n" > ${exfactdir}/${exfactfile}
+  printf "installpath=${installpath}\n" > ${exfactdir}/${exfactfile}
 fi
 
 # Next install the required modules.
@@ -87,4 +87,4 @@ puppet module install puppetlabs/firewall
 puppet module install puppetlabs/ruby
 
 # Run puppet.
-puppet apply ${setuppath}/manifests/site.pp --modulepath '$basemodulepath':${setuppath}/modules/
+puppet apply ${installpath}/puppet/manifests/site.pp --modulepath '$basemodulepath':${installpath}/puppet/modules/
