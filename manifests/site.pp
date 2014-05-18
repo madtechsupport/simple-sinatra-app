@@ -3,6 +3,7 @@ include '::passenger'
 
 # Get the repository.
 vcsrepo { "${installpath}":
+    before => File["${installpath}/public"],
     require => Class['::apache'],
     ensure => present,
     provider => git,
@@ -12,14 +13,13 @@ vcsrepo { "${installpath}":
 # Make sure the public directory exists.
 file { "${installpath}/public":
     ensure => 'directory',
-    require => File["${installpath}"],
 }
 
 # Make sure Gemfile.lock exists.
 file { "${installpath}/Gemfile.lock":
     ensure => "file",
     mode   => "0666",
-    require => File["${installpath}"],
+    require => File["${installpath}/public"],
 }
 
 # Do some virtual host thing here.
