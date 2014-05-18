@@ -8,7 +8,7 @@ set -e
 # Define environment variables.
 
 setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-installpath="/var/www/simple-sinatra-app
+installpath="/var/www/simple-sinatra-app"
 gitrepository="https://github.com/tnh/simple-sinatra-app"
 exfactdir="/etc/facter/facts.d"
 exfactfile="facts.txt"
