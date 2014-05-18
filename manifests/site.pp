@@ -56,3 +56,24 @@ package { 'sinatra':
     ensure   => 'installed',
     provider => 'gem',
 }
+
+# Apply the Mandatory Access Policy.
+case $::osfamily {
+  'redhat': {
+    package { 'policycoreutils-python':
+      require  => Class['::passenger'],
+      ensure   => 'installed',
+      provider => 'yum',
+    }
+    exec { 'selinux-create-policy':
+      require  => Package['policycoreutils-python'],
+      command  => "${::selinuxcreatepolicy} >/dev/null 2>&1",
+    }
+  }
+  'debian': {
+    # do something Debian specific
+  }
+  default: {
+    # ...
+  }
+}

@@ -10,6 +10,7 @@ set -e
 setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 installpath="/var/www/simple-sinatra-app"
 gitrepository="https://github.com/tnh/simple-sinatra-app"
+selinuxcreatepolicy="${setuppath}/selinux_create_policy.sh"
 exfactdir="/etc/facter/facts.d"
 exfactfile="facts.txt"
 platform=$(uname -i)
@@ -83,6 +84,7 @@ else
   mkdir -p ${exfactdir}
   printf "installpath=${installpath}\n" > ${exfactdir}/${exfactfile}
   printf "gitrepository=${gitrepository}\n" >> ${exfactdir}/${exfactfile}
+  printf "selinuxcreatepolicy=${selinuxcreatepolicy}\n" > ${exfactdir}/${exfactfile}
 fi
 
 # Next install the required modules.
