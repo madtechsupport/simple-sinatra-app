@@ -86,6 +86,7 @@ fi
 puppet module install puppetlabs/apache
 puppet module install puppetlabs/firewall
 puppet module install puppetlabs/ruby
+puppet module install puppetlabs/vcsrepo
 
 # Run puppet.
 puppet apply ${setuppath}/manifests/site.pp --modulepath '$basemodulepath':${setuppath}/modules/

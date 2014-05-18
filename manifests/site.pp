@@ -1,9 +1,25 @@
 include '::ruby'
 include '::passenger'
 
+# Get the repository.
+vcsrepo { "${installpath}":
+    require => Class['::apache'],
+    ensure => present,
+    provider => git,
+    source => "${repository}"
+}
+
 # Make sure the public directory exists.
 file { "${installpath}/public":
-    ensure => "directory",
+    ensure => 'directory',
+    require => File["${installpath}"],
+}
+
+# Make sure Gemfile.lock exists.
+file { "${installpath}/Gemfile.lock":
+    ensure => "file",
+    mode   => "0666",
+    require => File["${installpath}"],
 }
 
 # Do some virtual host thing here.
