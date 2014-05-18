@@ -46,11 +46,11 @@ resources { "firewall":
 }
 
 Firewall {
-  before  => Class['::fw_rules::post'],
-  require => Class['::fw_rules::pre'],
+  before  => Class['fw_rules::post'],
+  require => Class['fw_rules::pre'],
 }
 
-class { ['::fw_rules::pre', '::fw_rules::post']: }
+class { ['fw_rules::pre', 'fw_rules::post']: }
 
 class { '::firewall': }
 
