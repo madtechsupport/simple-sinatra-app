@@ -6,7 +6,7 @@ vcsrepo { "${installpath}":
     require => Class['::apache'],
     ensure => present,
     provider => git,
-    source => "${repository}"
+    source => "${gitrepository}"
 }
 
 # Make sure the public directory exists.

@@ -9,6 +9,7 @@ set -e
 
 setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 installpath="/var/www/simple-sinatra-app
+gitrepository="https://github.com/tnh/simple-sinatra-app"
 exfactdir="/etc/facter/facts.d"
 exfactfile="facts.txt"
 platform=$(uname -i)
@@ -68,7 +69,7 @@ yum install -y puppet > /dev/null
 
 echo "Puppet installed!"
 
-# Next save installpath as an external fact.
+# Next save some things as external facts.
 if [[ -d ${exfactdir} ]]; then
   printf "Strange, ${exfactdir} is alread present.\n"
   if [[ -f ${exfactdir}/${exfactfile} ]]; then
@@ -76,10 +77,12 @@ if [[ -d ${exfactdir} ]]; then
     exit 1
   else
     printf "installpath=${installpath}\n" > ${exfactdir}/${exfactfile}
+    printf "gitrepository=${gitrepository}\n" >> ${exfactdir}/${exfactfile}
   fi
 else
   mkdir -p ${exfactdir}
   printf "installpath=${installpath}\n" > ${exfactdir}/${exfactfile}
+  printf "gitrepository=${gitrepository}\n" >> ${exfactdir}/${exfactfile}
 fi
 
 # Next install the required modules.
