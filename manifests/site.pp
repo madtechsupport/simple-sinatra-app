@@ -41,9 +41,18 @@ class { '::apache':
 }
 
 # Begin firewall config
-class { '::firewall' :
-  ensure  => 'stopped',
+resources { "firewall":
+  purge => true
 }
+
+Firewall {
+  before  => Class['::post_fw_rules'],
+  require => Class['::pre_fw_rules'],
+}
+
+class { ['::pre_fw_rules', '::post_fw_rules']: }
+
+class { '::firewall': }
 
 # gem install bundler
 package { 'bundler':
@@ -68,6 +77,8 @@ case $::osfamily {
     exec { 'selinux-create-policy':
       require  => Package['policycoreutils-python'],
       command  => "${::selinuxcreatepolicy} >/dev/null 2>&1",
+      creates  => '/tmp/passenger.pp',
+      timeout  => '0',
     }
   }
   'debian': {
