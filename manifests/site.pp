@@ -2,24 +2,24 @@ include '::passenger'
 include '::ruby'
 
 # Get the repository.
-vcsrepo { "${installpath}":
-    before => File["${installpath}/public"],
-    require => Class['::apache'],
-    ensure => present,
-    provider => git,
-    source => "${gitrepository}"
+vcsrepo { "${::installpath}":
+  before => File["${::installpath}/public"],
+  require => Class['::apache'],
+  ensure => present,
+  provider => git,
+  source => "${::gitrepository}"
 }
 
 # Make sure the public directory exists.
-file { "${installpath}/public":
-    ensure => 'directory',
+file { "${::installpath}/public":
+  ensure => 'directory',
 }
 
 # Make sure Gemfile.lock exists.
-file { "${installpath}/Gemfile.lock":
-    ensure => "file",
-    mode   => "0666",
-    require => File["${installpath}/public"],
+file { "${::installpath}/Gemfile.lock":
+  ensure => "file",
+  mode   => "0666",
+  require => File["${::installpath}/public"],
 }
 
 # Do some virtual host thing here.
@@ -31,9 +31,9 @@ class { '::apache':
 
 ::apache::vhost { 'sinatra_default':
   port    => '80',
-  docroot => "${installpath}/public",
+  docroot => "${::installpath}/public",
   directories => [
-    { 'path'           => "${installpath}/public", 
+    { 'path'           => "${::installpath}/public", 
       'allow_override' => ['all'],
       'options'        => ['-MultiViews'],
     },
@@ -41,34 +41,34 @@ class { '::apache':
 }
 
 # Begin firewall config
-resources { "firewall":
+resources { "::firewall":
   purge => true
 }
 
 # Edit modules/fw_rules/pre to allow ssh access only from known IP addresses.
 Firewall {
-  before  => Class['fw_rules::post'],
-  require => Class['fw_rules::pre'],
+  before  => Class['::fw_rules::post'],
+  require => Class['::fw_rules::pre'],
 }
 
-class { ['fw_rules::pre', 'fw_rules::post']: }
+class { ['::fw_rules::pre', '::fw_rules::post']: }
 
 class { '::firewall': }
 
 # gem install bundler
 package { 'bundler':
-    ensure   => 'installed',
-    provider => 'gem',
+  ensure   => 'installed',
+  provider => 'gem',
 }
 
 # gem install bundler
 package { 'sinatra':
-    ensure   => 'installed',
-    provider => 'gem',
+  ensure   => 'installed',
+  provider => 'gem',
 }
 
 # Do some Debian and Red Hat specific things.
-case $::osfamily {
+case $osfamily {
   'redhat': {
     package { 'policycoreutils-python':
       require  => Class['::passenger'],
@@ -85,7 +85,6 @@ case $::osfamily {
   'debian': {
     # Here we could install SELinux or AppArmor
     # for Debian (some other time).
-    }
   }
   default: {
     # ...
@@ -102,7 +101,7 @@ package { 'openssh-server':
 file { '/etc/ssh/sshd_config':
   ensure => file,
   mode   => 600,
-  source => "${::setuppath}/files/sshd_config_${::osfamily}",
+  source => "${::setuppath}/files/sshd_config_${osfamily}",
 }
 service { 'sshd':
   ensure     => running,
