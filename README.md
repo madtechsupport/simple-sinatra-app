@@ -6,8 +6,10 @@ This script has been tested with Centos 6.5 (i386) minimal iso and Debian...
 Centos 6.5 (i386) minimal iso
 -----------------------------
 (These steps should also work for RHEL 6).
-1. Log in as `root`
-2. Install git, `yum install git -y`
+
+1.  Log in as `root`
+2.  Install git, `yum install git -y`
+
 3. Change directory to the location where you want to clone the repository.
 4. Clone the repository: 'git clone https://github.com/tnh/simple-sinatra-app.git`
 5. There should now be a new `simple-sinatra-appr` directory, change to that directory.
