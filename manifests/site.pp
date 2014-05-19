@@ -2,24 +2,24 @@ include '::passenger'
 include '::ruby'
 
 # Get the repository.
-vcsrepo { "${::installpath}":
-  before => File["${::installpath}/public"],
+vcsrepo { "${installpath}":
+  before => File["${installpath}/public"],
   require => Class['::apache'],
   ensure => present,
   provider => git,
-  source => "${::gitrepository}"
+  source => "${gitrepository}"
 }
 
 # Make sure the public directory exists.
-file { "${::installpath}/public":
+file { "${installpath}/public":
   ensure => 'directory',
 }
 
 # Make sure Gemfile.lock exists.
-file { "${::installpath}/Gemfile.lock":
+file { "${installpath}/Gemfile.lock":
   ensure => "file",
   mode   => "0666",
-  require => File["${::installpath}/public"],
+  require => File["${installpath}/public"],
 }
 
 # Do some virtual host thing here.
@@ -31,9 +31,9 @@ class { '::apache':
 
 ::apache::vhost { 'sinatra_default':
   port    => '80',
-  docroot => "${::installpath}/public",
+  docroot => "${installpath}/public",
   directories => [
-    { 'path'           => "${::installpath}/public", 
+    { 'path'           => "${installpath}/public", 
       'allow_override' => ['all'],
       'options'        => ['-MultiViews'],
     },
@@ -77,14 +77,14 @@ case $osfamily {
     }
     exec { 'selinux-create-policy':
       require  => Package['policycoreutils-python'],
-      command  => "${::selinuxcreatepolicy} >/dev/null 2>&1",
+      command  => "${selinuxcreatepolicy} >/dev/null 2>&1",
       creates  => '/tmp/passenger.pp',
       timeout  => '0',
     }
   }
   'debian': {
-    # Here we could install SELinux or AppArmor
-    # for Debian (some other time).
+    # Here we can install SELinux or AppArmor
+    # for Debian.
   }
   default: {
     # ...
@@ -101,7 +101,7 @@ package { 'openssh-server':
 file { '/etc/ssh/sshd_config':
   ensure => file,
   mode   => 600,
-  source => "${::setuppath}/files/sshd_config_${osfamily}",
+  source => "${setuppath}/files/sshd_config_${osfamily}",
 }
 service { 'sshd':
   ensure     => running,
