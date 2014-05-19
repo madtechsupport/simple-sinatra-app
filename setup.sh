@@ -6,9 +6,9 @@
 set -e
 
 # Define environment variables.
-
+arg1=$1
 setuppath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-installpath="${1:=/var/www/simple-sinatra-app}"
+installpath="${arg1:=/var/www/simple-sinatra-app}"
 gitrepository="https://github.com/tnh/simple-sinatra-app"
 selinuxcreatepolicy="${setuppath}/selinux_create_policy.sh"
 exfactdir="/etc/facter/facts.d"
@@ -43,37 +43,33 @@ if [[ ! -f ${setuppath}/modules/passenger/README.md ]]; then
 fi
 
 # Work out the Linux distribution and install puppet.
-case ${release} in
-  "release 6")
-    # This is Centos or Redhat 6.
-    # Check the architecture is supported.
-    if [[ ${platform} != "i386" && ${platform} != "x86_64" ]]; then
-      echo "Puppet Labs Enterprise Linux 6 yum repositories available for i386 and x86_64 hardware platforms only."
-      exit 1
-    fi
-    # Install puppet
-    printf "Installing puppet now.\n"
-    rpm_path=$(mktemp -d)/puppetlabs_release.rpm
-    repo_url=${repo_url_el_6}
-    curl -L -o "${rpm_path}" "${repo_url}" 2>/dev/null
-    yum localinstall "${rpm_path}" -y >/dev/null
-    yum install -y puppet > /dev/null
-  ;;
-  "wheezy")
-    # This is Debian 7.
-    codename="wheezy"
-    # Install puppet.
-    printf "Installing puppet now.]n"
-    deb_path=$(mktemp -d)/puppetlabs_release.deb
-    curl -L -o "${deb_path}" "${repo_url_apt}" 2>/dev/null
-    dpkg -i ${deb_path}
-    apt-get update 
-  ;;
-  *)
-    printf "Sorry, I don't know this operating system.\n"
+if grep "release 6" /etc/*-release >/dev/null 2>&1; then
+  # This is Centos or Redhat 6.
+  # Check the architecture is supported.
+  if [[ ${platform} != "i386" && ${platform} != "x86_64" ]]; then
+    echo "Puppet Labs Enterprise Linux 6 yum repositories available for i386 and x86_64 hardware platforms only."
     exit 1
-  ;;
-esac 
+  fi
+  # Install puppet
+  printf "Installing puppet now.\n"
+  rpm_path=$(mktemp -d)/puppetlabs_release.rpm
+  repo_url=${repo_url_el_6}
+  curl -L -o "${rpm_path}" "${repo_url}" 2>/dev/null
+  yum localinstall "${rpm_path}" -y >/dev/null
+  yum install -y puppet > /dev/null
+elif grep "wheezy" /etc/*-release >/dev/null 2>&1; then
+  # This is Debian 7.
+  codename="wheezy"
+  # Install puppet.
+  printf "Installing puppet now.]n"
+  deb_path=$(mktemp -d)/puppetlabs_release.deb
+  curl -L -o "${deb_path}" "${repo_url_apt}" 2>/dev/null
+  dpkg -i ${deb_path}
+  apt-get update -y
+else
+  printf "Sorry, I don't know this operating system.\n"
+  exit 1
+fi
 
 # Next save some things as external facts.
 if [[ -d ${exfactdir} ]]; then
