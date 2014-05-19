@@ -1,5 +1,9 @@
-include '::ruby'
 include '::passenger'
+
+# Stick to gems 1.8
+class { '::ruby':
+  gems_version  => '1.8'
+}
 
 # Get the repository.
 vcsrepo { "${installpath}":
