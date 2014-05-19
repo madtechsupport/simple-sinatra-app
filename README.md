@@ -1,7 +1,7 @@
 Instructions
 ============
 
-This script has been tested with [Centos 6.5 (i386) minimal iso](http://mirror.aarnet.edu.au/pub/centos/6.5/isos/i386/) and [Debian 7.5 (i386) netinst iso](http://cdimage.debian.org/debian-cd/7.5.0/i386/iso-cd/debian-7.5.0-i386-netinst.iso).
+This script has been tested with [Centos 6.5 (i386) minimal iso](http://mirror.aarnet.edu.au/pub/centos/6.5/isos/i386/CentOS-6.5-i386-minimal.iso) and [Debian 7.5 (i386) netinst iso](http://cdimage.debian.org/debian-cd/7.5.0/i386/iso-cd/debian-7.5.0-i386-netinst.iso).
 
 Centos 6.5 (i386) minimal iso
 -----------------------------

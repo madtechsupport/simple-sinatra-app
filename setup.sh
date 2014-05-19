@@ -99,4 +99,4 @@ puppet module install puppetlabs/vcsrepo
 puppet apply ${setuppath}/manifests/site.pp --modulepath '$basemodulepath':${setuppath}/modules/
 
 # We made it!
-printf "Installation completed. Please test by pointing your browser to port 80 of the host\'s IP address and checking for the welcome message."
+printf "Installation completed. Please test by pointing your browser to port 80 of the host\'s IP address and checking for the welcome message.\n"
