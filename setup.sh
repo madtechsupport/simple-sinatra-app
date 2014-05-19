@@ -16,7 +16,6 @@ exfactfile="facts.txt"
 platform=$(uname -i)
 release=$(cat /etc/*-release)
 repo_url_el_6="https://yum.puppetlabs.com/el/6/products/${platform}/puppetlabs-release-6-7.noarch.rpm"
-repo_url_apt="https://apt.puppetlabs.com/puppetlabs-release-${codename}.deb"
 
 # Need to be root.
 if [[ ${EUID} -ne 0 ]]; then
@@ -60,6 +59,7 @@ if grep "release 6" /etc/*-release >/dev/null 2>&1; then
 elif grep "wheezy" /etc/*-release >/dev/null 2>&1; then
   # This is Debian 7.
   codename="wheezy"
+  repo_url_apt="https://apt.puppetlabs.com/puppetlabs-release-${codename}.deb"
   # Install puppet.
   printf "Getting the puppet .deb now.\n"
   deb_path="$(mktemp -d)/puppetlabs_release.deb"
