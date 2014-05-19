@@ -45,6 +45,7 @@ resources { "firewall":
   purge => true
 }
 
+# Edit modules/fw_rules/pre to allow ssh access only from known IP addresses.
 Firewall {
   before  => Class['fw_rules::post'],
   require => Class['fw_rules::pre'],
@@ -82,12 +83,29 @@ case $::osfamily {
     }
   }
   'debian': {
-    package { 'ssh':
-      ensure   => 'installed',
-      provider => 'apt',
+    # Here we could install SELinux or AppArmor
+    # for Debian (some other time).
     }
   }
   default: {
     # ...
   }
+}
+
+# Here we can provide a custom sshd_config file
+# that does not permit root login and requires login
+# to be authenticated with a certificate and not password.
+package { 'openssh-server':
+  ensure => present,
+  before => File['/etc/ssh/sshd_config'],
+}
+file { '/etc/ssh/sshd_config':
+  ensure => file,
+  mode   => 600,
+  source => "${::setuppath}/files/sshd_config_${::osfamily}",
+}
+service { 'sshd':
+  ensure     => running,
+  enable     => true,
+  subscribe  => File['/etc/ssh/sshd_config'],
 }

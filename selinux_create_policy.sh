@@ -1,4 +1,5 @@
 #!/bin/bash
+# For Cenos 6.5
 
 set -e
 
