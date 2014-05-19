@@ -79,12 +79,13 @@ if [[ -d ${exfactdir} ]]; then
   else
     printf "installpath=${installpath}\n" > ${exfactdir}/${exfactfile}
     printf "gitrepository=${gitrepository}\n" >> ${exfactdir}/${exfactfile}
+    printf "selinuxcreatepolicy=${selinuxcreatepolicy}\n" >> ${exfactdir}/${exfactfile}
   fi
 else
   mkdir -p ${exfactdir}
   printf "installpath=${installpath}\n" > ${exfactdir}/${exfactfile}
   printf "gitrepository=${gitrepository}\n" >> ${exfactdir}/${exfactfile}
-  printf "selinuxcreatepolicy=${selinuxcreatepolicy}\n" > ${exfactdir}/${exfactfile}
+  printf "selinuxcreatepolicy=${selinuxcreatepolicy}\n" >> ${exfactdir}/${exfactfile}
 fi
 
 # Next install the required modules.
