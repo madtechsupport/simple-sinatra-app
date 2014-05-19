@@ -66,6 +66,7 @@ elif grep "wheezy" /etc/*-release >/dev/null 2>&1; then
   wget -O ${deb_path} ${repo_url_apt} 2>/dev/null
   dpkg -i ${deb_path}
   apt-get update -y
+  apt-get install puppet -y
 else
   printf "Sorry, I don't know this operating system.\n"
   exit 1
