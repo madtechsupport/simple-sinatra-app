@@ -2,7 +2,7 @@ include '::passenger'
 
 # Stick to ruby 1.8
 class { '::ruby':
-  version  => '1.8.7'
+  version  => '1.8'
 }
 
 # Get the repository.

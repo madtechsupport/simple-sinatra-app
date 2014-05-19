@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# This script bootstraps Puppet on CentOS 6.x Ubuntu LTS...
-# Tested on Centos 6.5 (32 bit).
+# Tested on Centos 6.5 (32 bit) Debian 7.5 (32 bit).
 
 set -e
 
