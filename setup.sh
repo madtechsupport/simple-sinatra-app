@@ -63,7 +63,7 @@ elif grep "wheezy" /etc/*-release >/dev/null 2>&1; then
   # Install puppet.
   printf "Getting the puppet .deb now.\n"
   deb_path="$(mktemp -d)/puppetlabs_release.deb"
-  wget -O ${deb_path} $(eval ${repo_url_apt}) 2>/dev/null
+  wget -O ${deb_path} ${repo_url_apt} 2>/dev/null
   dpkg -i ${deb_path}
   apt-get update -y
 else
