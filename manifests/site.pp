@@ -1,9 +1,5 @@
 include '::passenger'
-
-# Stick to ruby 1.8
-class { '::ruby':
-  version  => '1.8'
-}
+include '::ruby'
 
 # Get the repository.
 vcsrepo { "${installpath}":
