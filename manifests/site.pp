@@ -66,7 +66,7 @@ package { 'sinatra':
     provider => 'gem',
 }
 
-# Apply the Mandatory Access Policy.
+# Do some Debian and Red Hat specific things.
 case $::osfamily {
   'redhat': {
     package { 'policycoreutils-python':
@@ -82,7 +82,10 @@ case $::osfamily {
     }
   }
   'debian': {
-    # do something Debian specific
+    package { 'ssh':
+      ensure   => 'installed',
+      provider => 'apt',
+    }
   }
   default: {
     # ...
