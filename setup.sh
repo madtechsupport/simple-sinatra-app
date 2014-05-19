@@ -51,7 +51,7 @@ if grep "release 6" /etc/*-release >/dev/null 2>&1; then
     exit 1
   fi
   # Install puppet
-  printf "Installing puppet now.\n"
+  printf "Getting the puppet .rpm now.\n"
   rpm_path=$(mktemp -d)/puppetlabs_release.rpm
   repo_url=${repo_url_el_6}
   curl -L -o "${rpm_path}" "${repo_url}" 2>/dev/null
@@ -61,7 +61,7 @@ elif grep "wheezy" /etc/*-release >/dev/null 2>&1; then
   # This is Debian 7.
   codename="wheezy"
   # Install puppet.
-  printf "Installing puppet now.]n"
+  printf "Getting the puppet .deb now.\n"
   deb_path=$(mktemp -d)/puppetlabs_release.deb
   curl -L -o "${deb_path}" "${repo_url_apt}" 2>/dev/null
   dpkg -i ${deb_path}
