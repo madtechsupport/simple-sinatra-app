@@ -9,7 +9,7 @@ Centos 6.5 (i386) minimal iso
 
 1. Log in as `root`
 2. Install git, `yum install git -y`
-3. Change directory to the location where you want to clone the repository.
+3. Change directory to the location where you want to clone this repository.
 4. Clone the repository: 'git clone https://github.com/madtechsupport/simple-sinatra-app.git`
 5. There should now be a new `simple-sinatra-appr` directory, change to that directory.
 6. Run `setup.sh` to install and run the application using `/var/www/simple-sinatra-app` as the "document root", or run `setup.sh` followed by the full path of
@@ -21,7 +21,7 @@ Debian 7.5 (i386) netinst iso
 
 1. Log in as `root`
 2. Install git, `apt-get install git -y`
-3. Change directory to the location where you want to clone the repository.
+3. Change directory to the location where you want to clone this repository.
 4. Clone the repository: 'git clone https://github.com/madtechsupport/simple-sinatra-app.git`
 5. There should now be a new `simple-sinatra-appr` directory, change to that directory.
 6. Run `setup.sh` to install and run the application using `/var/www/simple-sinatra-app` as the "document root", or run `setup.sh` followed by the full path of
