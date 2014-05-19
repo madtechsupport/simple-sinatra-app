@@ -41,7 +41,7 @@ class { '::apache':
 }
 
 # Begin firewall config
-resources { "::firewall":
+resources { 'firewall':
   purge => true
 }
 
